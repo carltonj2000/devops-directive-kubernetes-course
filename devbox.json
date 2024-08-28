@@ -32,6 +32,7 @@
       "export PATH=$GOBIN:$PATH",
       "go install sigs.k8s.io/cloud-provider-kind@v0.2.0",
       "alias k=kubectl",
+      "alias t=task",
       "alias tl=task list"
     ],
     "scripts": {

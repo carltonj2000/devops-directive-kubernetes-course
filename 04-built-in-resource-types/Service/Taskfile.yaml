@@ -42,3 +42,21 @@ tasks:
       - cmd: gum style "🚨 Deleting the namespace recursively deletes the resources inside of it! 🚨 "
         silent: true
       - kubectl delete -f Namespace.yaml
+
+  07-tester-pod:
+    desc: "Create interactive pod in namespace to test above setup"
+    cmds:
+      - cmd: gum style "💡 Type exit to quit."
+      - kubectl run curl-pod -it --rm --image=curlimages/curl --command -- sh
+
+  08-tester-cross-ns:
+    desc: "Create interactive pod in namespace to test above setup"
+    cmds:
+      - cmd: gum style "💡 curl across ns using nginx-clusterip.04--service.svc.cluster.local"
+      - kubectl run curl-pod -it --rm -n default --image=curlimages/curl --command -- sh
+
+  09-run-cloud-provider-kind:
+    desc: "KinD Load Balance same as lesson 3 sigs.k8s.io/cloud-provider-kind@latest"
+    cmds:
+      - kubectl label node kind-control-plane node.kubernetes.io/exclude-from-external-load-balancers-node/kind-control-plane-
+      - cloud-provider-kind

@@ -1,0 +1,35 @@
+version: "3"
+
+env:
+  BORDER: double
+  BORDER_FOREGROUND: "212"
+  PADDING: "1 1"
+  MARGIN: "1 1"
+  NAMESPACE: 99--cj-kind-loadbalancer
+
+tasks:
+  00-delete-cluster:
+    desc: Delete an existing a kind Kubernetes cluster
+    cmds:
+      - kind delete cluster
+  
+  01-create-cluster:
+    desc: Create a Kubernetes cluster using kind
+    cmds:
+      - kind create cluster --config kind-config.yaml
+
+  02-create-namespace:
+    desc: "Create a namespace for these examples and set as default"
+    cmds:
+      - kubectl apply -f Namespace.yaml
+      - kubens ${NAMESPACE}
+
+  03-apply-deployment:
+    desc: "Apply the Deployment configuration"
+    cmds:
+      - kubectl apply -f Deployment.yaml
+
+  04-apply-loadbalancer-service:
+    desc: "Apply the  LoadBalancer Service"
+    cmds:
+      - kubectl apply -f Service.nginx-loadbalancer.yaml

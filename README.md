@@ -7,6 +7,13 @@ Base on the following:
 
 Progress:
 
+- 8/24/27 - Finished Section 4
+  - Namespace
+  - Pods
+  - ReplicaSets
+  - Deployments
+  - Services
+  - started figuring out why local load balancer was not working
 - 8/24/26 - Started Section 4 Namespaces
 - 8/24/25 - Finished Section 3
 
