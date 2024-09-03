@@ -1,0 +1,62 @@
+version: "3"
+
+env:
+  BORDER: double
+  BORDER_FOREGROUND: "212"
+  PADDING: "1 1"
+  MARGIN: "1 1"
+  NAMESPACE: 99--cj-kind-loadbalancer
+
+tasks:
+  00-delete-cluster:
+    desc: Delete an existing a kind Kubernetes cluster
+    cmds:
+      - kind delete cluster
+  
+  01-create-cluster:
+    desc: Create a Kubernetes cluster using kind
+    cmds:
+      - kind create cluster --config kind.yaml
+
+  02-create-ingress:
+    desc: "Create an ingress controller using ingress-nginx"
+    cmds:
+      - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+  03-verify-ingress:
+    desc: "Verify ingress controller"
+    cmds:
+      - kubectl -n ingress-nginx get pods --selector=app.kubernetes.io/component=controller
+  
+  04-create-nginx:
+    desc: "Create nginx"
+    cmds:
+      - kubectl apply -f nginx.yml
+
+  05-create-service:
+    desc: "Create service to expose nginx pod"
+    cmds:
+      - kubectl apply -f nginx-clusterip.yml
+
+  06-create-ingress:
+    desc: "Create ingress to expose service externally"
+    cmds:
+      - kubectl apply -f nginx-ingress.yml
+
+  07-test-cluster-ip:
+    desc: "Test cluster ip"
+    cmds:
+      - curl http://localhost/my-app
+  
+  08-cleanup:
+    desc: "Cleanup"
+    cmds:
+      - kubectl delete -f nginx-ingress.yml
+      - kubectl delete -f nginx-clusterip.yml
+      - kubectl delete -f nginx.yml
+  
+  09-tester-pod:
+    desc: "Create interactive pod to test above setup"
+    cmds:
+      - kubectl run curl-pod -it --rm --image=curlimages/curl --command -- sh
+
