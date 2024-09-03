@@ -47,3 +47,35 @@ tasks:
     cmds:
       - cmd: gum style "💡 Type exit to quit."
       - kubectl run curl-pod -it --rm --image=curlimages/curl --command -- sh
+
+  100-create-nginx:
+    desc: "Create nginx yaml"
+    cmds:
+      - rm -f nginx.yml
+      - kubectl run nginx --image=nginx --port=80 --dry-run=client -o yaml > nginx.yml
+
+  101-apply-nginx:
+    desc: "Apply nginx"
+    cmds:
+      - kubectl apply -f nginx.yml
+
+  102-create-nginx-nodeport:
+    desc: "Create nginx nodeport"
+    cmds:
+      - rm -f nginx-nodeport.yml
+      - kubectl expose pod nginx --name=nginx-nodeport --type=NodePort --port=80 --target-port=80 --dry-run=client -o yaml > nginx-nodeport.yml
+  
+  103-apply-nodeport:
+    desc: "Apply nodeport"
+    cmds:
+      - kubectl apply -f nginx-nodeport.yml
+  
+  104-test-nodeport:
+    desc: "Test nodeport"
+    cmds:
+      - curl http://localhost:30080
+  
+  105-delete-nginx:
+    desc: "Delete nginx"
+    cmds:
+      - kubectl delete -f nginx.yml
