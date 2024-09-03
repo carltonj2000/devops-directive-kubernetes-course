@@ -7,15 +7,21 @@ Base on the following:
 
 Progress:
 
-- 8/24/27 - Finished Section 4
+- 09/03/24 - Add - 99-cj-kind-ingress
+- 08/28/24 - Started Section 99 kind-loadbalancer section - did not work
+- 08/27/24 - Finished Section 4
   - Namespace
   - Pods
   - ReplicaSets
   - Deployments
   - Services
   - started figuring out why local load balancer was not working
-- 8/24/26 - Started Section 4 Namespaces
-- 8/24/25 - Finished Section 3
+- 08/26/24 - Started Section 4 Namespaces
+- 08/25/24 - Finished Section 3
+
+## Kind Load Balancer
+
+- https://iamunnip.medium.com/kind-local-kubernetes-cluster-part-5-25844d448926
 
 ## GCP
 
