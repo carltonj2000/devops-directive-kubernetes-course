@@ -19,10 +19,6 @@ Progress:
 - 08/26/24 - Started Section 4 Namespaces
 - 08/25/24 - Finished Section 3
 
-## Kind Load Balancer
-
-- https://iamunnip.medium.com/kind-local-kubernetes-cluster-part-5-25844d448926
-
 ## GCP
 
 Error Seen on cluster created on 8/25/24:

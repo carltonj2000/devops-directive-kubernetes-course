@@ -1,0 +1,61 @@
+version: "3"
+
+env:
+  BORDER: double
+  BORDER_FOREGROUND: "212"
+  PADDING: "1 1"
+  MARGIN: "1 1"
+  NAMESPACE: 99--cj-kind-loadbalancer
+
+tasks:
+  00-delete-cluster:
+    desc: Delete an existing a kind Kubernetes cluster
+    cmds:
+      - kind delete cluster
+  
+  01-create-cluster:
+    desc: Create a Kubernetes cluster using kind
+    cmds:
+      - kind create cluster --config kind.yaml
+
+  02-create-loadbalancer:
+    desc: "Create an MetalLB loadbalancer"
+    cmds:
+      - kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+
+  03-verify-loadbalancer:
+    desc: "Verify MetalLB load balancer"
+    cmds:
+      - kubectl -n metallb-system get pods
+  
+  04-find-lb-ip-range:
+    desc: "Find the ip range for the LB"
+    cmds:
+      - docker network inspect -f '{{printf "{{.IPAM.Config}}"}}' kind
+
+  05-provide-ips:
+    desc: "Provide MetalLB with an IP range"
+    cmds:
+      - kubectl apply -f metallb.yml
+
+  06-check-ips:
+    desc: "Check ips"
+    cmds:
+      - kubectl -n metallb-system get ipaddresspools
+      - kubectl -n metallb-system get l2advertisements
+
+  07-deploy-nginx:
+    desc: "deploy nginx"
+    cmds:
+      - kubectl apply -f nginx.yml
+
+  08-expose-nginx-2-lb:
+    desc: "Expose Nginx pod to use the loadbalancer"
+    cmds:
+      - kubectl apply -f nginx-loadbalancer.yml
+
+  09-tester-pod:
+    desc: "Create interactive pod to test above setup"
+    cmds:
+      - kubectl run curl-pod -it --rm --image=curlimages/curl --command -- sh
+
